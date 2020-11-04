@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class TestController {
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String index(Model model) {
         model.addAttribute("name","Nguyễn Thành Luân");
-        return "index";
+        //return "index";
+        return "layout";
     }
 
     @RequestMapping(path = "/members", method = RequestMethod.GET)
