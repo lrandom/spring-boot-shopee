@@ -38,8 +38,8 @@
                                 <td th:text="${user.getAddress()}"></td>
                                 <td th:text="${user.getPhone()}"></td>
                                 <th>
-                                    <a href="">Edit</a>
-                                    <a href="">Delete</a>
+                                    <a th:href="@{/admin/user/edit(id=${user.getId()})}">Edit</a>
+                                    <a th:href="@{/admin/user/delete(id=${user.getId()})}">Delete</a>
                                 </th>
                             </tr>
                             </tbody>
