@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Data
 public class User {
     @Id
@@ -14,4 +14,13 @@ public class User {
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "fullname")
+    private String fullname;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone")
+    private String phone;
 }

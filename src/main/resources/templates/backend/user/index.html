@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{backend/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid" layout:fragment="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered">
+                            <tbody><tr>
+                                <th style="width: 10px">#</th>
+                                <th>Username</th>
+                                <th>Full name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Operation</th>
+                            </tr>
+
+
+                            <tr th:each="user: ${users}">
+                                <td th:text="${user.getId()}"></td>
+                                <td th:text="${user.getUsername()}"></td>
+                                <td th:text="${user.getFullname()}"></td>
+                                <td th:text="${user.getAddress()}"></td>
+                                <td th:text="${user.getPhone()}"></td>
+                                <th>
+                                    <a href="">Edit</a>
+                                    <a href="">Delete</a>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

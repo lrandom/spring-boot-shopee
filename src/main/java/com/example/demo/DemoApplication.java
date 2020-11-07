@@ -15,7 +15,7 @@ public class DemoApplication {
 
     public static void main(String[] args) {
         AnnotationConfigServletWebServerApplicationContext  context = (AnnotationConfigServletWebServerApplicationContext) SpringApplication.run(DemoApplication.class, args);
-        Girl girl = context.getBean(Girl.class);
+/*        Girl girl = context.getBean(Girl.class);
         System.out.println(girl.getName());
 
 
@@ -25,7 +25,7 @@ public class DemoApplication {
 
 
 
-        userJpa.save(user);
+        userJpa.save(user);*/
 
     }
 
