@@ -23,8 +23,9 @@ public class UserController implements IController{
     }
 
     @Override
-    public void add() {
-
+    @GetMapping("admin/user/add")
+    public String add(Model model) {
+        return "backend/user/add";
     }
 
     @Override

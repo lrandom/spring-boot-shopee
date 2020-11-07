@@ -4,7 +4,7 @@ import org.springframework.ui.Model;
 
 public interface IController {
     public String list(Model model);
-    public void add();
+    public String add(Model model);
     public void edit();
     public void doAdd();
     public void doEdit();
