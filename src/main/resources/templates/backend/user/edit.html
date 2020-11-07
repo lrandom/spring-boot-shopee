@@ -13,12 +13,14 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Add</h3>
+                    <h3 class="card-title">Edit</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" th:object="${user}" method="post" th:action="@{/admin/user/do-add}">
+                <form role="form" th:object="${user}" method="post" th:action="@{/admin/user/do-edit}">
                     <div class="card-body">
+                        <input type="hidden" th:field="*{id}">
+
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" th:field="*{username}" class="form-control" >
@@ -46,7 +48,7 @@
 
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="text" th:field="*{password}" class="form-control">
+                            <input type="text" name="password" class="form-control">
                         </div>
                     </div>
                     <!-- /.card-body -->

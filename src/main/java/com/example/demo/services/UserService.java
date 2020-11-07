@@ -14,4 +14,13 @@ public class UserService {
     public List<User> getUsers(){
         return (List<User>)userJpa.findAll();
     }
+
+    public void saveUser(User user){
+        userJpa.save(user);
+    }
+
+    public User getUser(Long id){
+        return userJpa.findById(id).get();
+    }
+
 }
