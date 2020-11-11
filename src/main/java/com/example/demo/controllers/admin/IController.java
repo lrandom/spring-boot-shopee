@@ -9,4 +9,5 @@ public interface IController {
     public String edit(Model model,Long id);
     public String doAdd(User user);
     public String doEdit(User user,Long id, String password);
+    public String delete(Long id);
 }

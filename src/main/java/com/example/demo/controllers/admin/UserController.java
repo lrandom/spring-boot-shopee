@@ -15,22 +15,23 @@ import sun.security.provider.MD5;
 import java.util.List;
 
 @Controller
-public class UserController implements IController{
-    @Autowired private UserService userService;
+public class UserController implements IController {
+    @Autowired
+    private UserService userService;
 
 
     @Override
     @GetMapping("admin/user/list")
     public String list(Model model) {
-        List<User> users= userService.getUsers();
-        model.addAttribute("users",users);
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
         return "backend/user/index";
     }
 
     @Override
     @GetMapping("admin/user/add")
     public String add(Model model) {
-        model.addAttribute("user",new User());
+        model.addAttribute("user", new User());
         return "backend/user/add";
     }
 
@@ -38,7 +39,7 @@ public class UserController implements IController{
     @GetMapping("admin/user/edit")
     public String edit(Model model, @RequestParam Long id) {
         User user = userService.getUser(id);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "backend/user/edit";
     }
 
@@ -52,9 +53,18 @@ public class UserController implements IController{
 
     @Override
     @PostMapping("admin/user/do-edit")
-    public String doEdit(User user,@RequestParam Long id,@RequestParam String password) {
+    public String doEdit(User user,
+                         @RequestParam Long id,
+                         @RequestParam String password) {
         user.setPassword(Helpers.getMd5(password));
         userService.saveUser(user);
-        return "redirect:/admin/user/edit?id="+id;
+        return "redirect:/admin/user/edit?id=" + id;
+    }
+
+    @Override
+    @GetMapping("admin/user/delete")
+    public String delete(@RequestParam Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin/user/list";
     }
 }

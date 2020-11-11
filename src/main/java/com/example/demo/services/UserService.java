@@ -23,4 +23,8 @@ public class UserService {
         return userJpa.findById(id).get();
     }
 
+    public void deleteUser(Long id){
+        userJpa.deleteById(id);
+    }
+
 }

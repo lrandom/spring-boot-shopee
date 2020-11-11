@@ -39,7 +39,7 @@
                                 <td th:text="${user.getPhone()}"></td>
                                 <th>
                                     <a th:href="@{/admin/user/edit(id=${user.getId()})}">Edit</a>
-                                    <a th:href="@{/admin/user/delete(id=${user.getId()})}">Delete</a>
+                                    <a th:href="@{/admin/user/delete(id=${user.getId()})}"  onclick="return confirm('Are you sure want to delete it?')">Delete</a>
                                 </th>
                             </tr>
                             </tbody>
