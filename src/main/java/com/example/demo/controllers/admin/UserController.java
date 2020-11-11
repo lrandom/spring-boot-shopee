@@ -4,14 +4,21 @@ import com.example.demo.helpers.Helpers;
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sun.misc.Request;
 import sun.security.provider.MD5;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -22,9 +29,15 @@ public class UserController implements IController {
 
     @Override
     @GetMapping("admin/user/list")
-    public String list(Model model) {
-        List<User> users = userService.getUsers();
-        model.addAttribute("users", users);
+    public String list(Model model, @RequestParam(defaultValue = "1") int page,
+                       @RequestParam(defaultValue = "10") int offset) {
+        Page<User> users = userService.getUsers(PageRequest.of(page - 1, offset));
+        model.addAttribute("users", users.getContent());
+        Long totalRecord = userService.getTotal();
+        Double totalPage = Math.ceil(totalRecord / offset);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("offset", offset);
+        model.addAttribute("currentPage", page);
         return "backend/user/index";
     }
 
@@ -45,9 +58,21 @@ public class UserController implements IController {
 
     @Override
     @PostMapping("admin/user/do-add")
-    public String doAdd(User user) {
+    public String doAdd(User user,
+                        RedirectAttributes attributes
+            , @RequestParam(name = "avatar") MultipartFile file) {
+
+
         user.setPassword(Helpers.getMd5(user.getPassword()));
-        userService.saveUser(user);
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path,bytes);
+            userService.saveUser(user);
+            attributes.addFlashAttribute("message", "Add user successfully");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Add failed");
+        }
         return "redirect:/admin/user/add"; //chuyen ve form add
     }
 
