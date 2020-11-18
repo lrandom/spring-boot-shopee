@@ -4,6 +4,7 @@ import com.example.demo.helpers.Helpers;
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sun.misc.Request;
 import sun.security.provider.MD5;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,6 +31,8 @@ public class UserController implements IController {
     @Autowired
     private UserService userService;
 
+    @Value("${config.upload_folder}")
+    String UPLOADED_FOLDER;
 
     @Override
     @GetMapping("admin/user/list")
@@ -60,18 +67,35 @@ public class UserController implements IController {
     @PostMapping("admin/user/do-add")
     public String doAdd(User user,
                         RedirectAttributes attributes
-            , @RequestParam(name = "avatar") MultipartFile file) {
-
-
+            , @RequestParam(name = "file") MultipartFile file) {
         user.setPassword(Helpers.getMd5(user.getPassword()));
+
         try {
+
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int year  = localDate.getYear();
+            int month = localDate.getMonthValue();
+
+            String saveFolder = UPLOADED_FOLDER+month+"_"+year+"/";
+            attributes.addFlashAttribute("message", "Done");///Users/mac/Documents/uploads/11_2020
+
+            File dir = new File(saveFolder);
+            if(dir.isFile() || !dir.exists()){
+                dir.mkdir(); //tạo mới một folder Users/mac/Documents/uploads/11_2020
+            }
+
+            String filename = System.currentTimeMillis()+file.getOriginalFilename();
+
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Path path = Paths.get(dir.getAbsolutePath()+"/" + filename);
             Files.write(path,bytes);
+            user.setAvatar(dir.getAbsolutePath() +"/"+ filename);
             userService.saveUser(user);
             attributes.addFlashAttribute("message", "Add user successfully");
         } catch (Exception e) {
-            attributes.addFlashAttribute("error", "Add failed");
+            e.printStackTrace();
+            attributes.addFlashAttribute("error", "Add failed "+ e.getMessage());
         }
         return "redirect:/admin/user/add"; //chuyen ve form add
     }

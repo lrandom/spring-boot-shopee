@@ -11,9 +11,9 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container-fluid" layout:fragment="content">
-        <div class="row">
-            <div class="col-md-12">
+<div class="container-fluid" layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
             <!--    <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">List</h3>
@@ -60,57 +60,63 @@
 -->
 
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">User</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Username</th>
-                                <th>Full name</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="user: ${users}">
-                                <td th:text="${user.getId()}"></td>
-                                <td th:text="${user.getUsername()}"></td>
-                                <td th:text="${user.getFullname()}"></td>
-                                <td th:text="${user.getAddress()}"></td>
-                                <td th:text="${user.getPhone()}"></td>
-                                <th>
-                                    <a th:href="@{/admin/user/edit(id=${user.getId()})}">Edit</a>
-                                    <a th:href="@{/admin/user/delete(id=${user.getId()})}"  onclick="return confirm('Are you sure want to delete it?')">Delete</a>
-                                </th>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">User</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Avatar</th>
+                            <th>Username</th>
+                            <th>Full name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user: ${users}">
+                            <td>
+                                <img th:src="@{'/uploads/'+${user.getAvatar()}}" alt="">
+                            </td>
+                            <td th:text="${user.getId()}"></td>
+                            <td th:text="${user.getUsername()}"></td>
+                            <td th:text="${user.getFullname()}"></td>
+                            <td th:text="${user.getAddress()}"></td>
+                            <td th:text="${user.getPhone()}"></td>
+                            <th>
+                                <a th:href="@{/admin/user/edit(id=${user.getId()})}">Edit</a>
+                                <a th:href="@{/admin/user/delete(id=${user.getId()})}"
+                                   onclick="return confirm('Are you sure want to delete it?')">
+                                    Delete
+                                </a>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li
                                 th:each="pageNumber:${#numbers.sequence(1, totalPage)}"
                                 th:attr="class=${currentPage==pageNumber ? 'active page-item' : 'page-item'}"
-                                th:if="${pageNumber>0}"
-                            >
-                                <a class="page-link" th:href="@{/admin/user/list(page=${pageNumber},offset=${offset})}"
-                                   th:text="${pageNumber}"
-                                   ></a>
-                            </li>
-                        </ul>
-                    </div>
+                                th:if="${pageNumber>0}">
+                            <a class="page-link" th:href="@{/admin/user/list(page=${pageNumber},offset=${offset})}"
+                               th:text="${pageNumber}"
+                            ></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
         </div>
 
     </div>
+
+</div>
 </body>
 </html>
