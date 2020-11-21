@@ -81,7 +81,7 @@
                         <tbody>
                         <tr th:each="user: ${users}">
                             <td>
-                                <img th:src="@{'/uploads/'+${user.getAvatar()}}" alt="">
+                                <img width="100" th:src="@{'/uploads/'+${user.getAvatar()}}" alt="">
                             </td>
                             <td th:text="${user.getId()}"></td>
                             <td th:text="${user.getUsername()}"></td>

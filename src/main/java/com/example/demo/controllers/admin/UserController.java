@@ -28,6 +28,7 @@ import java.util.List;
 
 @Controller
 public class UserController implements IController {
+
     @Autowired
     private UserService userService;
 
@@ -90,7 +91,8 @@ public class UserController implements IController {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(dir.getAbsolutePath()+"/" + filename);
             Files.write(path,bytes);
-            user.setAvatar(dir.getAbsolutePath() +"/"+ filename);
+            user.setAvatar(saveFolder.replace(UPLOADED_FOLDER, "")
+                    + filename); //11_2020/tenfile.png
             userService.saveUser(user);
             attributes.addFlashAttribute("message", "Add user successfully");
         } catch (Exception e) {
@@ -113,6 +115,13 @@ public class UserController implements IController {
     @Override
     @GetMapping("admin/user/delete")
     public String delete(@RequestParam Long id) {
+        User user = userService.getUser(id);
+        try {
+            File file = new File(UPLOADED_FOLDER + user.getAvatar());
+            file.delete();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         userService.deleteUser(id);
         return "redirect:/admin/user/list";
     }
