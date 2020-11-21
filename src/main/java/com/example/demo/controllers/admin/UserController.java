@@ -1,6 +1,7 @@
 package com.example.demo.controllers.admin;
 
 import com.example.demo.helpers.Helpers;
+import com.example.demo.models.GenericModel;
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class UserController implements IController {
+public class UserController implements IController<User> {
 
     @Autowired
     private UserService userService;
@@ -52,7 +53,7 @@ public class UserController implements IController {
     @Override
     @GetMapping("admin/user/add")
     public String add(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("gModel", new User());
         return "backend/user/add";
     }
 
@@ -60,53 +61,57 @@ public class UserController implements IController {
     @GetMapping("admin/user/edit")
     public String edit(Model model, @RequestParam Long id) {
         User user = userService.getUser(id);
-        model.addAttribute("user", user);
+        model.addAttribute("gModel", user);
         return "backend/user/edit";
     }
 
+
     @Override
     @PostMapping("admin/user/do-add")
-    public String doAdd(User user,
+    public String doAdd(User gModel,
                         RedirectAttributes attributes
             , @RequestParam(name = "file") MultipartFile file) {
+        User user = (User) gModel;
         user.setPassword(Helpers.getMd5(user.getPassword()));
 
         try {
 
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            int year  = localDate.getYear();
+            int year = localDate.getYear();
             int month = localDate.getMonthValue();
 
-            String saveFolder = UPLOADED_FOLDER+month+"_"+year+"/";
+            String saveFolder = UPLOADED_FOLDER + month + "_" + year + "/";
             attributes.addFlashAttribute("message", "Done");///Users/mac/Documents/uploads/11_2020
 
             File dir = new File(saveFolder);
-            if(dir.isFile() || !dir.exists()){
+            if (dir.isFile() || !dir.exists()) {
                 dir.mkdir(); //tạo mới một folder Users/mac/Documents/uploads/11_2020
             }
 
-            String filename = System.currentTimeMillis()+file.getOriginalFilename();
+            String filename = System.currentTimeMillis() + file.getOriginalFilename();
 
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(dir.getAbsolutePath()+"/" + filename);
-            Files.write(path,bytes);
+            Path path = Paths.get(dir.getAbsolutePath() + "/" + filename);
+            Files.write(path, bytes);
             user.setAvatar(saveFolder.replace(UPLOADED_FOLDER, "")
                     + filename); //11_2020/tenfile.png
             userService.saveUser(user);
             attributes.addFlashAttribute("message", "Add user successfully");
         } catch (Exception e) {
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Add failed "+ e.getMessage());
+            attributes.addFlashAttribute("error", "Add failed " + e.getMessage());
         }
         return "redirect:/admin/user/add"; //chuyen ve form add
     }
 
+
     @Override
     @PostMapping("admin/user/do-edit")
-    public String doEdit(User user,
+    public String doEdit(User gModel,
                          @RequestParam Long id,
                          @RequestParam String password) {
+        User user = (User) gModel;
         user.setPassword(Helpers.getMd5(password));
         userService.saveUser(user);
         return "redirect:/admin/user/edit?id=" + id;
@@ -119,7 +124,7 @@ public class UserController implements IController {
         try {
             File file = new File(UPLOADED_FOLDER + user.getAvatar());
             file.delete();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         userService.deleteUser(id);

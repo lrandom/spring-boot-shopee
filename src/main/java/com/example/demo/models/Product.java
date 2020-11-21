@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "product")
 @Data
-public class Product {
+public class Product extends GenericModel {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;

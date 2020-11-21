@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user")
 @Data
-public class User {
+public class User extends GenericModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

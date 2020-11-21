@@ -17,7 +17,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" th:object="${user}" method="post" th:action="@{/admin/user/do-edit}">
+                <form role="form" th:object="${gModel}" method="post" th:action="@{/admin/user/do-edit}">
                     <div class="card-body">
                         <input type="hidden" th:field="*{id}">
 
