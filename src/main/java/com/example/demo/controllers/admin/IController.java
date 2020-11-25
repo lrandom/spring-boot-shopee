@@ -13,6 +13,6 @@ public interface IController<T extends GenericModel>{
     public String doAdd(T gModel,
                         RedirectAttributes attributes,
                         MultipartFile file);
-    public String doEdit(T gModel,Long id, String password);
+    public String doEdit(T gModel,Long id,  RedirectAttributes attributes, String password);
     public String delete(Long id);
 }

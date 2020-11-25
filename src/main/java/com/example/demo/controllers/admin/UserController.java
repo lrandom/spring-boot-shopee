@@ -38,7 +38,8 @@ public class UserController implements IController<User> {
 
     @Override
     @GetMapping("admin/user/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int page,
+    public String list(Model model,
+                       @RequestParam(defaultValue = "1") int page,
                        @RequestParam(defaultValue = "10") int offset) {
         Page<User> users = userService.getUsers(PageRequest.of(page - 1, offset));
         model.addAttribute("users", users.getContent());
@@ -110,6 +111,7 @@ public class UserController implements IController<User> {
     @PostMapping("admin/user/do-edit")
     public String doEdit(User gModel,
                          @RequestParam Long id,
+                         RedirectAttributes attributes,
                          @RequestParam String password) {
         User user = (User) gModel;
         user.setPassword(Helpers.getMd5(password));

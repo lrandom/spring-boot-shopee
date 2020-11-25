@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
     @Autowired
@@ -14,6 +16,14 @@ public class CategoryService {
 
     public Page<Category> getCategory(Pageable pageable) {
         return (Page<Category>) categoryJpa.findAll(pageable);
+    }
+
+    public List<Category> getCategory(){
+        return (List<Category>) categoryJpa.findAll();
+    }
+
+    public List<Category> getCategories(Long id){
+        return (List<Category>) categoryJpa.findAll(id);
     }
 
     public void saveCategory(Category category) {
@@ -31,4 +41,6 @@ public class CategoryService {
     public Long getTotal() {
         return categoryJpa.getTotal();
     }
+
+
 }

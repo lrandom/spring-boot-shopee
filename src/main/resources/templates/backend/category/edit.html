@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{backend/layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="container-fluid" layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div th:if="${message != null}"
+                 class="alert alert-success" th:text="${message}"></div>
 
+            <div th:if="${error != null}"
+                 class="alert alert-danger" th:text="${error}"></div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Add</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" th:object="${gModel}"
+                      method="post"
+                      enctype="multipart/form-data"
+                      th:action="@{/admin/category/do-edit}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="card-body">
+
+
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" th:field="*{name}" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Full name</label>
+                            <select class="form-control" th:field="*{parent_id}">
+                                <option value="0">No parent</option>
+                                <option th:each="parent : ${parents}"
+                                        th:value="${parent.getId()}"
+                                        th:text="${parent.getName()}">
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.example.demo.models;
 
 import javafx.scene.chart.CategoryAxis;
 import lombok.Data;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,14 +19,17 @@ public class Category extends GenericModel {
 
     private String name;
 
-    @Column(name = "parent_id")
-    private Long parentId;
 
-    @OneToOne()
-    @JoinColumn(name = "parent_id")
+    @Column(name="parent_id")
+    private Long parent_id;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @OneToOne(cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "parent_id",
+            insertable = false, updatable = false)
     private Category parent;
 
-    @OneToOne(mappedBy = "parent")
+    @OneToOne(mappedBy = "parent", cascade = {CascadeType.DETACH})
     private Category child;
 
     @OneToMany(fetch = FetchType.LAZY,
